@@ -1,10 +1,10 @@
-package com.sebcicho.exchange.rate;
+package com.sebcicho.application;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class DataCollectorServiceTests {
+class ExchangeRateApplicationTests {
 
 	@Test
 	void contextLoads() {
