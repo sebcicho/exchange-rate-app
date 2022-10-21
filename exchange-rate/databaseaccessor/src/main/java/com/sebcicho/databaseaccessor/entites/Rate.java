@@ -4,8 +4,8 @@ import javax.persistence.*;
 import java.sql.Date;
 
 @Entity
-@Table(indexes = {
-    @Index(name = "index", columnList = "currency, date", unique = true)
+@Table(name = "rates",
+        indexes = {@Index(name = "index", columnList = "currency, date", unique = true)
 })
 public class Rate {
 
@@ -13,10 +13,16 @@ public class Rate {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer id;
 
+    @Column(nullable = false)
     private Integer counter;
+
+    @Column(nullable = false)
     private Date date;
+
+    @Column(nullable = false)
     private String currency;
 
+    @Column(nullable = false)
     private Double rate;
 
     public Integer getId() {

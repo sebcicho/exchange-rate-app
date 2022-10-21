@@ -11,18 +11,20 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.sql.Date;
 
 @Service
 @EntityScan({"com.sebcicho.databaseaccessor"})
 @ComponentScan({"com.sebcicho.databaseaccessor"})
-@EnableConfigurationProperties(AdditionalConfigProperties.class)
+@EnableConfigurationProperties(BaseCurrencyProperty.class)
 public class ExchangeRateCalculationService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExchangeRateCalculationService.class);
 
     @Autowired
-    private AdditionalConfigProperties configProperties;
+    private BaseCurrencyProperty configProperties;
     @Autowired
     private DataRepo dataRepo;
 
@@ -30,17 +32,21 @@ public class ExchangeRateCalculationService {
         return dataRepo.getRates();
     }
 
-    public Double getRate(Date date, String from, String to) {
-        Rate fromRate = dataRepo.getRate(date, from);
-        Rate toRate = dataRepo.getRate(date, to);
+    @Nullable
+    public Double getRate(@Nullable Date requestedDate, @Nonnull String from, @Nonnull String to) {
+        Rate fromRate = dataRepo.getRate(requestedDate, from);
+        Rate toRate = dataRepo.getRate(requestedDate, to);
 
         if (fromRate == null || toRate == null) {
             return null;
         }
-        //TODO bump counters
+
+        Date date = requestedDate != null ? requestedDate : fromRate.getDate();
+
+        dataRepo.incrementCounters(date, from, to);
 
         try {
-            return RateCalculationUtil.calculateRate(from, fromRate.getRate(), to, toRate.getRate(), configProperties.getBaseCurrency());
+            return RateCalculationUtil.calculateRate(from, fromRate.getRate(), to, toRate.getRate(), configProperties.getCurrency());
         } catch (IllegalArgumentException e) {
             LOGGER.warn(String.format("Can not calculate exchange rate %s", e.getMessage()));
             return null;
