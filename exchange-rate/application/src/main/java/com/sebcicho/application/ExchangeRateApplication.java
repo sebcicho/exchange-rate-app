@@ -26,7 +26,7 @@ import java.sql.Date;
 @RestController
 public class ExchangeRateApplication {
 
-	Logger logger = LoggerFactory.getLogger(ExchangeRateApplication.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ExchangeRateApplication.class);
 	@Autowired
 	private DataCollectorService dataCollectorService;
 
@@ -39,7 +39,7 @@ public class ExchangeRateApplication {
 
 	@PostMapping("/exchange")
 	public @ResponseBody ResponseEntity<ExchangeRateDataDto> createExchangeData (@RequestBody ExchangeRateDataDto exchangeRateDataDto) {
-		logger.info(String.format("New data accepted, exchange rates for currency: %s, on: %s", exchangeRateDataDto.getBase(), exchangeRateDataDto.getDate()));
+		LOGGER.info(String.format("New data accepted, exchange rates for currency: %s, on: %s", exchangeRateDataDto.getBase(), exchangeRateDataDto.getDate()));
 		dataCollectorService.storeExchangeDataEntry(exchangeRateDataDto);
 		return ResponseEntity.ok(exchangeRateDataDto);
 	}
@@ -58,7 +58,6 @@ public class ExchangeRateApplication {
 			return ResponseEntity.notFound().build();
 		}
 		return ResponseEntity.ok(new ExchangeRateDto(from, to, exchangeRate));
-
 	}
 
 }
