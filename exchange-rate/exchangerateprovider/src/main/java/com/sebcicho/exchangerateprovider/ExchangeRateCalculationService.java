@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.Objects;
 
@@ -39,7 +40,7 @@ public class ExchangeRateCalculationService {
     }
 
     @Nullable
-    public Double getRate(@Nullable Date requestedDate, @Nonnull String from, @Nonnull String to) {
+    public BigDecimal getRate(@Nullable Date requestedDate, @Nonnull String from, @Nonnull String to) {
         Objects.requireNonNull(from);
         Objects.requireNonNull(to);
 

@@ -17,6 +17,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 
 @SpringBootApplication()
@@ -55,7 +56,7 @@ public class ExchangeRateApplication {
 														 @RequestParam("to") String to,
 														 @RequestParam(name = "date", required = false) Date date) {
 
-		Double exchangeRate =  exchangeRateCalculationService.getRate(date, from, to);
+		BigDecimal exchangeRate =  exchangeRateCalculationService.getRate(date, from, to);
 		if (exchangeRate == null) {
 			return ResponseEntity.notFound().build();
 		}

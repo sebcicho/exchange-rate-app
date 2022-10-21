@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,7 +34,7 @@ class ExchangeRateCalculationServiceTests {
         when(dataRepo.getRate(isNull(), eq("POL"))).thenReturn(null);
 
         ExchangeRateCalculationService exchangeRateCalculationService = new ExchangeRateCalculationService(baseCurrencyProperty, dataRepo);
-        Double result = exchangeRateCalculationService.getRate(null, "CHF", "POL");
+        BigDecimal result = exchangeRateCalculationService.getRate(null, "CHF", "POL");
 
         assertNull(result);
     }
@@ -47,7 +48,7 @@ class ExchangeRateCalculationServiceTests {
         when(dataRepo.getRate(isNull(), eq("PLN"))).thenReturn(rate);
 
         ExchangeRateCalculationService exchangeRateCalculationService = new ExchangeRateCalculationService(baseCurrencyProperty, dataRepo);
-        Double result = exchangeRateCalculationService.getRate(null, "CHF", "PLN");
+        BigDecimal result = exchangeRateCalculationService.getRate(null, "CHF", "PLN");
 
         assertNotNull(result);
         verify(dataRepo).incrementCounters(any(), any(), any());

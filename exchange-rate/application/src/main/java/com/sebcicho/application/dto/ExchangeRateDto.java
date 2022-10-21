@@ -1,11 +1,13 @@
 package com.sebcicho.application.dto;
 
+import java.math.BigDecimal;
+
 public class ExchangeRateDto {
     private String from;
     private String to;
-    private Double exchange;
+    private BigDecimal exchange;
 
-    public ExchangeRateDto(String from, String to, Double exchange) {
+    public ExchangeRateDto(String from, String to, BigDecimal exchange) {
         this.from = from;
         this.to = to;
         this.exchange = exchange;
@@ -28,11 +30,11 @@ public class ExchangeRateDto {
         this.to = to;
     }
 
-    public Double getExchange() {
+    public BigDecimal getExchange() {
         return exchange;
     }
 
-    public void setExchange(Double exchange) {
+    public void setExchange(BigDecimal exchange) {
         this.exchange = exchange;
     }
 }
