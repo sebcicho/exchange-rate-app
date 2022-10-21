@@ -5,6 +5,7 @@ import com.sebcicho.databaseaccessor.RatesRepository;
 import com.sebcicho.databaseaccessor.entites.Rate;
 import com.sebcicho.datacollector.DataCollectorService;
 import com.sebcicho.datacollector.dto.ExchangeRateDataDto;
+import com.sebcicho.exchangerateprovider.AdditionalConfigProperties;
 import com.sebcicho.exchangerateprovider.ExchangeRateCalculationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,7 @@ import java.sql.Date;
 @ComponentScan({"com.sebcicho.*"})
 @EntityScan({"com.sebcicho.databaseaccessor"})
 @EnableJpaRepositories(basePackageClasses= {RatesRepository.class})
+
 @RestController
 public class ExchangeRateApplication {
 
@@ -32,6 +34,9 @@ public class ExchangeRateApplication {
 
 	@Autowired
 	private ExchangeRateCalculationService exchangeRateCalculationService;
+
+	@Autowired
+	private AdditionalConfigProperties configProperties;
 
 	public static void main(String[] args) {
 		SpringApplication.run(ExchangeRateApplication.class, args);

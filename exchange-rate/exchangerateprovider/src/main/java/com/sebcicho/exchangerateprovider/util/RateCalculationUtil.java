@@ -24,9 +24,12 @@ public class RateCalculationUtil {
     public static double calculateRate(String from,
                                 Double fromRate,
                                 String to,
-                                Double toRate) {
-        double maxSpread = Double.max(SPREAD_MAP.getOrDefault(from, DEFAULT_SPREAD),
-                SPREAD_MAP.getOrDefault(to, DEFAULT_SPREAD));
+                                Double toRate,
+                                String baseCurrency) {
+        double formSpread = baseCurrency.equals(from) ? 0 : SPREAD_MAP.getOrDefault(from, DEFAULT_SPREAD);
+        double toSpread = baseCurrency.equals(to) ? 0 : SPREAD_MAP.getOrDefault(to, DEFAULT_SPREAD);
+
+        double maxSpread = Double.max(formSpread, toSpread);
 
         if(fromRate == 0) {
             throw new IllegalArgumentException("Can not divide by zero!");
@@ -34,5 +37,4 @@ public class RateCalculationUtil {
 
         return (toRate/fromRate) * ((100 - maxSpread)/100);
     }
-
 }
