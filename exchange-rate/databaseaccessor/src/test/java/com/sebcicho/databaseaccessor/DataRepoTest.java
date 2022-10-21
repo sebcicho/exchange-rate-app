@@ -36,4 +36,13 @@ class DataRepoTest {
 
         assertNotNull(rate);
 	}
+	@Test
+	void rateRepoEntryFoundNullDate() {
+        when(ratesRepository.findTop1ByCurrencyOrderByDateDesc(any())).thenReturn(ImmutableList.of(new Rate()));
+        DataRepo dataRepo = new DataRepo(ratesRepository);
+
+        Rate rate = dataRepo.getRate(null, "EUR");
+
+        assertNotNull(rate);
+	}
 }

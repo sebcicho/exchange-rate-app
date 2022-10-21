@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.sql.Date;
+import java.util.Objects;
 
 @Service
 @EntityScan({"com.sebcicho.databaseaccessor"})
@@ -22,6 +23,11 @@ import java.sql.Date;
 public class ExchangeRateCalculationService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExchangeRateCalculationService.class);
+
+    ExchangeRateCalculationService(BaseCurrencyProperty configProperties, DataRepo dataRepo) {
+        this.configProperties = configProperties;
+        this.dataRepo = dataRepo;
+    }
 
     @Autowired
     private BaseCurrencyProperty configProperties;
@@ -34,6 +40,9 @@ public class ExchangeRateCalculationService {
 
     @Nullable
     public Double getRate(@Nullable Date requestedDate, @Nonnull String from, @Nonnull String to) {
+        Objects.requireNonNull(from);
+        Objects.requireNonNull(to);
+
         Rate fromRate = dataRepo.getRate(requestedDate, from);
         Rate toRate = dataRepo.getRate(requestedDate, to);
 
