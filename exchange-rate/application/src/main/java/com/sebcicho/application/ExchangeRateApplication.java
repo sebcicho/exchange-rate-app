@@ -1,5 +1,6 @@
 package com.sebcicho.application;
 
+import com.sebcicho.application.dto.ExchangeRateDto;
 import com.sebcicho.databaseaccessor.RatesRepository;
 import com.sebcicho.databaseaccessor.entites.Rate;
 import com.sebcicho.datacollector.DataCollectorService;
@@ -15,6 +16,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.sql.Date;
 
 @SpringBootApplication()
 @ComponentScan({"com.sebcicho.*"})
@@ -43,8 +46,19 @@ public class ExchangeRateApplication {
 
 	@GetMapping("/all")
 	public @ResponseBody Iterable<Rate> getAll() {
-		// This returns a JSON or XML with the users
 		return exchangeRateCalculationService.getAll();
+	}
+
+	@GetMapping("/exchange")
+	public @ResponseBody ResponseEntity<ExchangeRateDto> getExchangeRate(@RequestParam("from") String from,
+														 @RequestParam("to") String to,
+														 @RequestParam("date") Date date) {
+		Double exchangeRate =  exchangeRateCalculationService.getRate(date, from, to);
+		if (exchangeRate == null) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok(new ExchangeRateDto(from, to, exchangeRate));
+
 	}
 
 }
