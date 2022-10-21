@@ -5,7 +5,6 @@ import com.sebcicho.databaseaccessor.RatesRepository;
 import com.sebcicho.databaseaccessor.entites.Rate;
 import com.sebcicho.datacollector.DataCollectorService;
 import com.sebcicho.datacollector.dto.ExchangeRateDataDto;
-import com.sebcicho.exchangerateprovider.BaseCurrencyProperty;
 import com.sebcicho.exchangerateprovider.ExchangeRateCalculationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
