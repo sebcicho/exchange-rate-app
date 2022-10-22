@@ -3,7 +3,7 @@ package com.sebcicho.application;
 import com.sebcicho.application.dto.ExchangeRateDto;
 import com.sebcicho.databaseaccessor.RatesRepository;
 import com.sebcicho.databaseaccessor.entites.Rate;
-import com.sebcicho.datacollector.DataCollectorService;
+import com.sebcicho.datacollector.DataCollectorStorageService;
 import com.sebcicho.datacollector.dto.ExchangeRateDataDto;
 import com.sebcicho.exchangerateprovider.ExchangeRateCalculationService;
 import org.slf4j.Logger;
@@ -24,13 +24,12 @@ import java.sql.Date;
 @ComponentScan({"com.sebcicho.*"})
 @EntityScan({"com.sebcicho.databaseaccessor"})
 @EnableJpaRepositories(basePackageClasses= {RatesRepository.class})
-
 @RestController
 public class ExchangeRateApplication {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ExchangeRateApplication.class);
 	@Autowired
-	private DataCollectorService dataCollectorService;
+	private DataCollectorStorageService dataCollectorStorageService;
 
 	@Autowired
 	private ExchangeRateCalculationService exchangeRateCalculationService;
@@ -42,25 +41,25 @@ public class ExchangeRateApplication {
 	@PostMapping("/exchange")
 	public @ResponseBody ResponseEntity<ExchangeRateDataDto> createExchangeData (@RequestBody ExchangeRateDataDto exchangeRateDataDto) {
 		LOGGER.info(String.format("New data accepted, exchange rates for currency: %s, on: %s", exchangeRateDataDto.getBase(), exchangeRateDataDto.getDate()));
-		dataCollectorService.storeExchangeDataEntry(exchangeRateDataDto);
+		dataCollectorStorageService.storeExchangeDataEntry(exchangeRateDataDto);
 		return ResponseEntity.ok(exchangeRateDataDto);
-	}
-
-	@GetMapping("/all")
-	public @ResponseBody Iterable<Rate> getAll() {
-		return exchangeRateCalculationService.getAll();
 	}
 
 	@GetMapping("/exchange")
 	public @ResponseBody ResponseEntity<ExchangeRateDto> getExchangeRate(@RequestParam("from") String from,
 														 @RequestParam("to") String to,
-														 @RequestParam(name = "date", required = false) Date date) {
+														 @RequestParam(name = "date", required = false) Date date) throws InterruptedException {
 
 		BigDecimal exchangeRate =  exchangeRateCalculationService.getRate(date, from, to);
 		if (exchangeRate == null) {
 			return ResponseEntity.notFound().build();
 		}
 		return ResponseEntity.ok(new ExchangeRateDto(from, to, exchangeRate));
+	}
+
+	@GetMapping("/all")
+	public @ResponseBody Iterable<Rate> getAll() {
+		return exchangeRateCalculationService.getAll();
 	}
 
 }

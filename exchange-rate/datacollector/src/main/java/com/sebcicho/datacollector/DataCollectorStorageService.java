@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @ComponentScan({"com.sebcicho.databaseaccessor"})
-public class DataCollectorService {
+public class DataCollectorStorageService {
 
     @Autowired
     private DataRepo dataRepo;
@@ -17,5 +17,4 @@ public class DataCollectorService {
     public void storeExchangeDataEntry(ExchangeRateDataDto exchangeRateDataDto) {
         dataRepo.addRates(ExchangeRateDataMapper.fromDto(exchangeRateDataDto));
     }
-
 }
