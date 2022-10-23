@@ -56,10 +56,4 @@ public class ExchangeRateApplication {
 		}
 		return ResponseEntity.ok(new ExchangeRateDto(from, to, exchangeRate));
 	}
-
-	@GetMapping("/all")
-	public @ResponseBody Iterable<Rate> getAll() {
-		return exchangeRateCalculationService.getAll();
-	}
-
 }
