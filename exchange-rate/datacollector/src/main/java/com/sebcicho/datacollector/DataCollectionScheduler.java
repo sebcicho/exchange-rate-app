@@ -20,10 +20,10 @@ public class DataCollectionScheduler {
     @Autowired
     private ExchangeRateApiClient exchangeRateApiClient;
 
-    @Scheduled(cron = "@daily")
+    @Scheduled(cron = "0 5 0 * * *")
     public void scheduleFixedRateTask() {
         LOGGER.info(
-                "Storing new data in the base - ");
+                "Storing new data in the database");
         ExchangeRateDataDto exchangeRateDataDto = exchangeRateApiClient.queryApi();
         dataCollectorStorageService.storeExchangeDataEntry(exchangeRateDataDto);
     }
