@@ -1,18 +1,17 @@
 package com.sebcicho.exchangerateprovider.util;
 
-import javax.annotation.Nonnull;
+import lombok.NonNull;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class RateCalculationUtil {
 
     private static final Map<String, Double> SPREAD_MAP;
     private static final Double DEFAULT_SPREAD = 2.75;
 
-    private static final int SCALE = 15;
+    private static final int SCALE = 10;
 
     static {
         SPREAD_MAP = new HashMap<>();
@@ -27,13 +26,11 @@ public class RateCalculationUtil {
         SPREAD_MAP.put("ZAR", 6D);
     }
 
-    public static BigDecimal calculateRate(@Nonnull String from,
-                                           @Nonnull Double fromRate,
-                                           @Nonnull String to,
-                                           @Nonnull Double toRate,
-                                           @Nonnull String baseCurrency) {
-        validateInputs(from, fromRate, to, toRate, baseCurrency);
-
+    public static BigDecimal calculateRate(@NonNull String from,
+                                           @NonNull Double fromRate,
+                                           @NonNull String to,
+                                           @NonNull Double toRate,
+                                           @NonNull String baseCurrency) {
         if(fromRate == 0) {
             throw new IllegalArgumentException("Can not divide by zero!");
         }
@@ -46,19 +43,7 @@ public class RateCalculationUtil {
 
         return (toRateBigDec.divide(fromRateBigDec, SCALE, RoundingMode.HALF_DOWN))
                 .multiply((BigDecimal.valueOf(100D).subtract(maxSpread))
-                        .divide(BigDecimal.valueOf(100D), 10, RoundingMode.HALF_DOWN));
-    }
-
-    private static void validateInputs(String from,
-                           Double fromRate,
-                           String to,
-                           Double toRate,
-                           String baseCurrency) {
-        Objects.requireNonNull(from);
-        Objects.requireNonNull(fromRate);
-        Objects.requireNonNull(to);
-        Objects.requireNonNull(toRate);
-        Objects.requireNonNull(baseCurrency);
+                        .divide(BigDecimal.valueOf(100D), SCALE, RoundingMode.HALF_DOWN));
     }
 
     private static double getSpread(String baseCurrency, String currency) {

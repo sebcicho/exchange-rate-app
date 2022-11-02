@@ -13,11 +13,11 @@ public class RateCalculationUtilTest {
 
     public static Stream<Arguments> provideTestParameters() {
         return Stream.of(
-                Arguments.of("EUR", 1D, "PLN", 4.8D, "EUR", new BigDecimal("4.6680000000000000000000000")),
-                Arguments.of("JPY", 147D, "PLN", 4.8D, "EUR",  new BigDecimal("0.0315918367346940750000000")),
-                Arguments.of("PLN", 4.8D, "RUB", 60D, "EUR",  new BigDecimal("11.7500000000000000000000000")),
-                Arguments.of("PLN", 4.8D, "CHF", 1.1, "EUR",  new BigDecimal("0.2228645833333336575000000")),
-                Arguments.of("MYR", 4.63D, "JPY", 147D, "EUR",  new BigDecimal("30.3207343412526995200000000"))
+                Arguments.of("EUR", 1D, "PLN", 4.8D, "EUR", new BigDecimal("4.66800000000000000000")),
+                Arguments.of("JPY", 147D, "PLN", 4.8D, "EUR",  new BigDecimal("0.03159183671100000000")),
+                Arguments.of("PLN", 4.8D, "RUB", 60D, "EUR",  new BigDecimal("11.75000000000000000000")),
+                Arguments.of("PLN", 4.8D, "CHF", 1.1, "EUR",  new BigDecimal("0.22286458336575000000")),
+                Arguments.of("MYR", 4.63D, "JPY", 147D, "EUR",  new BigDecimal("30.32073434125600000000"))
         );
     }
 
